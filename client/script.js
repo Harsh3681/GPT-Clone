@@ -29,6 +29,7 @@ function typeText(element, text){
       element.innerHTML += text.charAt(index);
       index++;
     }
+
     else
       clearInterval(interval);
   }, 20);
@@ -42,7 +43,6 @@ function generateUniqueId(element){
 
   return `id-${timestamp}-${hexadecimalNumber}`;
 }
-
 
 // box container around each message
 function chatStripe(isAI, value, uniqueId){
@@ -58,8 +58,6 @@ function chatStripe(isAI, value, uniqueId){
           </div>
           <div class="message" id="${uniqueId}">${value}</div>
           
-          ${isAI ? `<div><img src="${copy}" alt="copy" class="copy-icon"></div>` : ''}
-          
         </div>
       </div>
     `
@@ -74,7 +72,7 @@ const handleSubmit = async(e) => {
 
   // users chat stripe
   chatContainer.innerHTML += chatStripe(false, data.get("prompt"));
-
+  
   form.reset();
 
   // bot chat stripe
@@ -111,13 +109,13 @@ const handleSubmit = async(e) => {
     console.log({parsedData});
 
     typeText(messageDiv, parsedData);
+
   }
   else{
     const err = await response.text();
     messageDiv.innerHTML = "Something went wrong :(";
     alert(err);
   }
-
 }
 
 // call handleSubmit upon user submit the message
@@ -201,33 +199,10 @@ submitButton.addEventListener("click", (event) => {
 
 // -----------------------------------------------------------------
 
-// for copy button
+// copy
 
-const copyBtn = document.querySelector("#copybtn");
-const solution = document.querySelector("#solution");
-const modal = document.getElementById("modal");
-const closeBtn = document.getElementsByClassName("close")[0];
+// ${isAI ? `<button><img src="${copy}" alt="copy" class="copy-icon"></button>` : ''} 
 
-copyBtn.addEventListener("click", () => {
-  const textToCopy = solution.innerText;
-  navigator.clipboard.writeText(textToCopy)
-  .then(() => {
-    modal.style.display = "block";
-  })
-  .catch((err) => {
-    console.error("Failed to copy: ", err);
-  });
-});
-
-closeBtn.addEventListener("click", () => {
-  modal.style.display = "none";
-});
-
-window.addEventListener("click", (event) => {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-});
-
+// add this above line just below    <div class="message" id="${uniqueId}">${value}</div> in "chatStript"
 
 
